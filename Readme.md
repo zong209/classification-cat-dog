@@ -56,28 +56,32 @@
 
 1. 获取指定层的`feature map`
 
+```
    python predict.py -i imagepath -m modle_file path -f index of layer
    example:
    python predict.py -i data/test/123.jpg -m models/1580889991_alexnet_10_16.pt -f 1
+```
 
-   | features index | layer                       |
-   | -------------- | --------------------------- |
-   | 0              | nn.Conv2d(3, 64,11, 4, =2)  |
-   | 1              | nn.ReLU                     |
-   | 2              | nn.MaxPool2d(=3, 2)         |
-   | 3              | nn.Conv2d(64, 192, =5, =2)  |
-   | 4              | nn.ReLU                     |
-   | 5              | nn.MaxPool2d(=3, 2)         |
-   | 6              | nn.Conv2d(192, 384, =3, =1) |
-   | 7              | nn.ReLU                     |
-   | 8              | nn.Conv2d(384, 256, =3, =1) |
-   | 9              | nn.ReLU                     |
-   | 10             | nn.Conv2d(256, 256, =3, =1) |
-   | 11             | nn.ReLU                     |
-   | 12             | nn.MaxPool2d(=3, 2)         |
+| features index | layer                       |
+| -------------- | --------------------------- |
+| 0              | nn.Conv2d(3, 64,11, 4, =2)  |
+| 1              | nn.ReLU                     |
+| 2              | nn.MaxPool2d(=3, 2)         |
+| 3              | nn.Conv2d(64, 192, =5, =2)  |
+| 4              | nn.ReLU                     |
+| 5              | nn.MaxPool2d(=3, 2)         |
+| 6              | nn.Conv2d(192, 384, =3, =1) |
+| 7              | nn.ReLU                     |
+| 8              | nn.Conv2d(384, 256, =3, =1) |
+| 9              | nn.ReLU                     |
+| 10             | nn.Conv2d(256, 256, =3, =1) |
+| 11             | nn.ReLU                     |
+| 12             | nn.MaxPool2d(=3, 2)         |
 
 2. 获取所有层`feature map`
 
+```
    python predict.py -i imagepath -m modle_file path -f all
    example:
    python predict.py -i data/test/123.jpg -m models/1580889991_alexnet_10_16.pt -f all
+```
