@@ -14,6 +14,12 @@
     ├── predict.py 预测函数
     └── requirements.txt 依赖
 
+## 准备环境
+
+**`python>3.5`**
+
+`pip install -r requirements.txt`
+
 ## 训练模型
 
 ### step1: 准备数据
