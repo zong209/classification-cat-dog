@@ -88,6 +88,8 @@
 
     python predict.py -i imagepath -m modle_file path
 
+![example_img](images/detect_result.png)
+
 ### 获取`feature map`
 
 1. 获取指定层的`feature map`
