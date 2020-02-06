@@ -18,6 +18,14 @@ from torchvision import transforms
 CUDA_AVALIABLE = torch.cuda.is_available()
 
 
+def init_folder():
+    dirs = ['data', 'models', 'logs']
+    for dir in dirs:
+        if not os.path.exists(dir):
+            os.mkdir(dir)
+    print("[INFO] Initialed folders")
+
+
 class AverageMeter(object):
     """Computes and stores the average and current value"""
     def __init__(self):
@@ -211,6 +219,9 @@ def valid(net, epoch=None, valid_log=None):
 
 
 if __name__ == "__main__":
+
+    init_folder()
+
     TRAIN_DIR = "data/train"
     VALID_DIR = "data/val"
     NUMBER_CLASSES = 2
