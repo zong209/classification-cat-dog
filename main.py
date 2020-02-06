@@ -14,7 +14,6 @@ import torch.optim as optim
 from torch import nn
 from dataset import AnimalDataset
 from torchvision import transforms
-from model import alexnet
 
 CUDA_AVALIABLE = torch.cuda.is_available()
 
@@ -46,8 +45,13 @@ def adjust_learning_rate(optimizer, epoch, lr, lr_steps, weight_decay):
     return optimizer
 
 
-def train(resume_file=None):
-    net = alexnet(pretrained=True, num_classes=NUMBER_CLASSES)
+def train(pertrained=False, resume_file=None):
+    if pertrained:
+        from model import alexnet
+        net = alexnet(pretrained=True, num_classes=NUMBER_CLASSES)
+    else:
+        from model import AlexNet
+        net = AlexNet(num_classes=NUMBER_CLASSES)
     valid_precision = 0
     policies = net.parameters()
 
@@ -56,6 +60,14 @@ def train(resume_file=None):
                           momentum=MOMENTUM,
                           weight_decay=WEIGHT_DECAY)
 
+    train_log = open(
+        "logs/train_logs_{}.log".format(
+            time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime())), "w")
+    valid_log = open(
+        "logs/valid_logs_{}.log".format(
+            time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime())), "w")
+    train_log.write("{}\t{}\t{}\n".format("epoch", "losses ", "correct"))
+    valid_log.write("{}\t{}\t{}\n".format("epoch", "losses ", "correct"))
     # 恢复训练
     if resume_file:
         if os.path.isfile(resume_file):
@@ -123,8 +135,12 @@ def train(resume_file=None):
                            top1=correct,
                            lr=optimizer.param_groups[-1]['lr'])))
 
-        if epoch % 10 == 0:
-            valid_precision = valid(net)
+        train_log.write("{:5d}\t{:.5f}\t{:.5f}\n".format(
+            epoch, losses.avg, correct.avg))
+        train_log.flush()
+
+        if epoch % 1 == 0:
+            valid_precision = valid(net, epoch, valid_log)
         # 保存网络
         if (epoch > 0 and epoch % 10 == 0) or epoch == EPOCHES - 1:
             save_path = os.path.join(
@@ -142,8 +158,11 @@ def train(resume_file=None):
                     'loss': loss
                 }, save_path)
 
+    train_log.close()
+    valid_log.close()
 
-def valid(net):
+
+def valid(net, epoch=None, valid_log=None):
     batch_time = AverageMeter()
     losses = AverageMeter()
     correct = AverageMeter()
@@ -184,6 +203,10 @@ def valid(net):
                            batch_time=batch_time,
                            loss=losses,
                            top1=correct)))
+    if valid_log:
+        valid_log.write("{:5d}\t{:.5f}\t{:.5f}\n".format(
+            epoch, losses.avg, correct.avg))
+        valid_log.flush()
     return correct.avg
 
 
@@ -191,13 +214,13 @@ if __name__ == "__main__":
     TRAIN_DIR = "data/train"
     VALID_DIR = "data/val"
     NUMBER_CLASSES = 2
-    BATCHSIZE = 16
-    EPOCHES = 100
-    LR = 0.001
-    LR_steps = [10, 40]
+    BATCHSIZE = 64
+    EPOCHES = 200
+    LR = 0.01
+    LR_steps = [60, 120]
     MOMENTUM = 0.9
     WEIGHT_DECAY = 0.005
-    criterion = nn.CrossEntropyLoss().cuda()
+    criterion = nn.CrossEntropyLoss()
 
     train_transforms = transforms.Compose([
         transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
@@ -230,4 +253,5 @@ if __name__ == "__main__":
                                                    batch_size=BATCHSIZE,
                                                    shuffle=True)
 
-    train(resume_file="models/1580889991_alexnet_10_16.pt")
+    train(pertrained=False,
+          resume_file="models/1580961759_alexnet_10_64_0.51562.pt")

@@ -2,15 +2,17 @@
 
     ├── Readme.md
     ├── catdogclass.py 原始文件 by TZH
+    ├── logs 日志文件夹
     ├── data 数据文件夹
     │ ├── test 测试数据
     │ ├── train 训练数据
     │ └── val 验证数据
-    ├── dataset.py 数据类
+    ├── dataset.py 数据类定义
     ├── main.py 训练入口文件
+    ├── measure.py 画Loss图
     ├── model.py 模型文件
-    ├── models 模型存储路径
-    │ └── pretrained 预训练模型
+    ├── models 模型存储文件夹
+    │ └── pretrained 预训练模型文件夹
     ├── predict.py 预测函数
     └── requirements.txt 依赖
 
@@ -46,9 +48,35 @@
 
 ### step3: 模型训练
 
+1.  使用预训练模型
+    超参设置
+
+        BATCHSIZE = 16
+        EPOCHES = 20
+        LR = 0.01
+        LR_steps = [10]
+        MOMENTUM = 0.9
+        WEIGHT_DECAY = 0.005
+
 修改 `main.py` 中 最后一行为：
 
-    train()
+    train(pretrained=True)
+
+然后执行： `python main.py`
+
+2.  不使用预训练模型
+    超参设置
+
+        BATCHSIZE = 64
+        EPOCHES = 200
+        LR = 0.01
+        LR_steps = [60，120]
+        MOMENTUM = 0.9
+        WEIGHT_DECAY = 0.005
+
+修改 `main.py` 中 最后一行为：
+
+    train(pretrained=False)
 
 然后执行： `python main.py`
 
@@ -91,3 +119,17 @@
    example:
    python predict.py -i data/test/123.jpg -m models/1580889991_alexnet_10_16.pt -f all
 ```
+
+## `Loss`图像
+
+训练过程中的数据存储在`logs`文件夹中,包含`train_loss`，`valid_loss`：
+
+    epoch	losses 	correct
+        0	0.47454	0.75873
+        1	0.28150	0.87114
+        ......
+
+作图：
+
+    执行 `python measure.py -l logs/train_logs_2020-02-05-21:53:33.log `
+    标题等自行添加

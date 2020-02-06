@@ -26,6 +26,11 @@ test_transforms = transforms.Compose([
 ])
 
 
+def get_labels(class_data_dir="data/train"):
+    import os
+    return os.listdir(class_data_dir)
+
+
 def predict(image_path):
     start_time = time.time()
     image = Image.open(image_path)
@@ -121,7 +126,7 @@ if __name__ == "__main__":
     pt_file = args.model_file
     # image_path = "data/test/456.jpg"
     # pt_file = "models/1580889991_alexnet_10_16.pt"
-    labels = ["cat", "dog"]
+    labels = get_labels()
     net = AlexNet(num_classes=2)
     print("=> Loading model ...")
     checkpoint = torch.load(pt_file)
