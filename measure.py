@@ -50,7 +50,10 @@ def plt_loss(train_loss_file):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--logs", '-l', help="loss log file path")
+    parser.add_argument("--logs",
+                        '-l',
+                        required=True,
+                        help="loss log file path")
 
     args = parser.parse_args()
     log_path = args.logs

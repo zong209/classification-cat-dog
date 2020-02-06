@@ -112,9 +112,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Predict cat or dog in image")
     parser.add_argument("--image_path",
                         "-i",
+                        required=True,
                         help="image path need to detect",
                         default="data/test/456.jpg")
-    parser.add_argument("--model_file", "-m", help="model file path")
+    parser.add_argument("--model_file",
+                        "-m",
+                        required=True,
+                        help="model file path")
     parser.add_argument("--features",
                         '-f',
                         help="show features type",
