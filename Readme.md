@@ -2,6 +2,7 @@
 
     ├── Readme.md
     ├── catdogclass.py 原始文件 by TZH
+    ├── images 图片存储文件夹
     ├── logs 日志文件夹
     ├── data 数据文件夹
     │ ├── test 测试数据
@@ -44,6 +45,7 @@
 
 ### step2: 准备预训练模型
 
+    mkdir -p models/pretrained
     wget https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth -o models/pretrained/alexnet-owt-4df8aa71.pth
 
 ### step3: 模型训练
@@ -136,4 +138,4 @@
     执行 `python measure.py -l logs/train_logs_2020-02-05-21:53:33.log `
     标题等自行添加
 
-![feature_map](images/train_loss.png)
+![train_loss](images/train_loss.png)
