@@ -120,6 +120,8 @@
    python predict.py -i data/test/123.jpg -m models/1580889991_alexnet_10_16.pt -f all
 ```
 
+![feature_map](images/feature_map.png)
+
 ## `Loss`图像
 
 训练过程中的数据存储在`logs`文件夹中,包含`train_loss`，`valid_loss`：
@@ -133,3 +135,5 @@
 
     执行 `python measure.py -l logs/train_logs_2020-02-05-21:53:33.log `
     标题等自行添加
+
+![feature_map](images/train_loss.png)
